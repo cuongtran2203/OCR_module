@@ -1,0 +1,8 @@
+torch
+torchvision
+opencv-python 
+pandas
+transformers
+datasets
+jiwer
+scikit-learn

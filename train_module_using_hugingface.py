@@ -23,8 +23,8 @@ if __name__ == "__main__":
     df = pd.read_csv(csv_path)
     processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
     encoder = ViTModel(ViTConfig())
-    decoder = TrOCRForCausalLM(TrOCRConfig())
-    # model = VisionEncoderDecoderModel(encoder=encoder, decoder=decoder)
+    decoder = TrOCRForCausalLM(TrOCRConfig(vocab_size=228))
+    model = VisionEncoderDecoderModel(encoder=encoder, decoder=decoder)
     model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-stage1")
     # Define Datasets
     train_df, test_df = train_test_split(df, test_size=0.2)

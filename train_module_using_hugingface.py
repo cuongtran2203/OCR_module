@@ -7,6 +7,8 @@ from metrics import *
 from transformers import Seq2SeqTrainer, Seq2SeqTrainingArguments
 from transformers import default_data_collator
 import os
+from transformers import AutoTokenizer
+os.makedirs("results",exist_ok=True)
 from transformers import (
     TrOCRConfig,
     TrOCRProcessor,
@@ -15,17 +17,16 @@ from transformers import (
     ViTModel,
     VisionEncoderDecoderModel,
 )
-os.makedirs("results",exist_ok=True)
 if __name__ == "__main__":
     csv_path = 'datasets_VN_OCR.csv'
     EPOCHS = 1000
-    BATCH_SIZE = 8
+    BATCH_SIZE = 4
     df = pd.read_csv(csv_path)
+    tokenizer2 = AutoTokenizer.from_pretrained("vinai/phobert-base-v2")
+   
     processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
-    encoder = ViTModel(ViTConfig())
-    decoder = TrOCRForCausalLM(TrOCRConfig(vocab_size=228))
-    model = VisionEncoderDecoderModel(encoder=encoder, decoder=decoder)
-    model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-stage1")
+    processor.tokenizer = tokenizer2
+    model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-small-stage1")
     # Define Datasets
     train_df, test_df = train_test_split(df, test_size=0.2)
     # we reset the indices to start from zero
@@ -50,7 +51,7 @@ if __name__ == "__main__":
 
     # set beam search parameters
     model.config.eos_token_id = processor.tokenizer.sep_token_id
-    model.config.max_length = 512
+    model.config.max_length = 256
     model.config.early_stopping = True
     model.config.no_repeat_ngram_size = 3
     model.config.length_penalty = 2.0

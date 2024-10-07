@@ -1,6 +1,13 @@
+
+
 from transformers import TrOCRProcessor
 import fastwer
+from transformers import AutoTokenizer
+
+tokenizer2 = AutoTokenizer.from_pretrained("vinai/phobert-base-v2")
+
 processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+processor.tokenizer = tokenizer2
 
 
 def compute_metrics(pred):

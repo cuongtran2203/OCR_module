@@ -9,7 +9,7 @@ from transformers import default_data_collator
 import os
 os.makedirs("results",exist_ok=True)
 if __name__ == "__main__":
-    csv_path = ''
+    csv_path = 'datasets_VN_OCR.csv'
     EPOCHS = 1000
     BATCH_SIZE = 8
     df = pd.read_csv(csv_path)

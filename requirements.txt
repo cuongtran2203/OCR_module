@@ -2,7 +2,10 @@ torch
 torchvision
 opencv-python 
 pandas
-transformers
+transformers[torch]
 datasets
 jiwer
 scikit-learn
+tf-keras
+pybind11
+

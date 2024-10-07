@@ -7,6 +7,14 @@ from metrics import *
 from transformers import Seq2SeqTrainer, Seq2SeqTrainingArguments
 from transformers import default_data_collator
 import os
+from transformers import (
+    TrOCRConfig,
+    TrOCRProcessor,
+    TrOCRForCausalLM,
+    ViTConfig,
+    ViTModel,
+    VisionEncoderDecoderModel,
+)
 os.makedirs("results",exist_ok=True)
 if __name__ == "__main__":
     csv_path = 'datasets_VN_OCR.csv'
@@ -14,6 +22,9 @@ if __name__ == "__main__":
     BATCH_SIZE = 8
     df = pd.read_csv(csv_path)
     processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
+    encoder = ViTModel(ViTConfig())
+    decoder = TrOCRForCausalLM(TrOCRConfig())
+    # model = VisionEncoderDecoderModel(encoder=encoder, decoder=decoder)
     model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-stage1")
     # Define Datasets
     train_df, test_df = train_test_split(df, test_size=0.2)
